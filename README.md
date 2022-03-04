@@ -4,6 +4,8 @@ https://github.com/felix-roc/hdd-anomaly-detection/projects/1
 
 https://docs.google.com/spreadsheets/d/1YKveHT7hxAMxskIMl8ME6mpzMyzKsbP0VDcdaEIcJc8/edit#gid=1615308371
 
+https://en.wikipedia.org/wiki/S.M.A.R.T.
+
 # ds-modeling-pipeline
 
 Here you find a Skeleton project for building a simple model in a python script or notebook and log the results on MLFlow.
