@@ -6,7 +6,6 @@ import pandas as pd
 # Load env file with connection details
 load_dotenv("../../.env")
 DB_STRING = os.getenv('DB_STRING')
-print(DB_STRING)
 # Create engine to use with pandas
 db = create_engine(DB_STRING)
 # Query the SQL database
