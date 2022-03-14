@@ -102,6 +102,18 @@ def drop_missing_rows(df) -> pd.DataFrame:
     df = df.dropna(how="any")
     return df
 
+def drop_doublicate_rows(df) -> pd.DataFrame:
+    """Drop doublicated rows (measurement errors, see EDA)
+
+    Args:
+        df (_type_): Drive stats data
+
+    Returns:
+        pd.DataFrame: Drive stats data with removed rows
+    """
+    df.drop_duplicates(keep='first', subset=["serial_number", "date"])
+    return df
+
 def load_preprocess_data(filename="ST4000DM000_history_total", path=os.getcwd()) -> pd.DataFrame:
     """Load and preprocess drive stats data
 
@@ -117,6 +129,7 @@ def load_preprocess_data(filename="ST4000DM000_history_total", path=os.getcwd())
     df = drop_missing_cols(df)
     df = drop_missing_rows(df)
     df = drop_constant_cols(df)
+    df = drop_doublicate_rows(df)
     return df
 
 def save_preprocessed_data(filename="ST4000DM000_history_total", path=os.getcwd()):
