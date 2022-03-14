@@ -1,11 +1,14 @@
-hdd-anomaly-detection
-==============================
-
+# Capstone Project: HDD Anomaly-Detection
 A short description of the project.
+## Useful links:
+[Project board](https://github.com/felix-roc/hdd-anomaly-detection/projects/1)
 
-Project Organization
-------------
+[GoogleSheet](https://docs.google.com/spreadsheets/d/1YKveHT7hxAMxskIMl8ME6mpzMyzKsbP0VDcdaEIcJc8/edit#gid=1615308371)
+## Setup
+Create virtual environment
 
+Install using makefile
+## Project Organization
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
@@ -50,8 +53,3 @@ Project Organization
     │       └── visualize.py
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
-
-
---------
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
