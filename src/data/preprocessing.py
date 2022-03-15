@@ -4,6 +4,7 @@ import os
 
 from sklearn.model_selection import train_test_split
 
+
 def load_drive_stats(filename, path) -> pd.DataFrame:
     """Load drive stats file
 
@@ -17,6 +18,7 @@ def load_drive_stats(filename, path) -> pd.DataFrame:
     file = f"{path}/data/raw/{filename}.csv"
     df = pd.read_csv(file, parse_dates=["date"])
     return df
+
 
 def countdown(df) -> pd.DataFrame:
     """Create column with failure date and calculate countdown
@@ -39,6 +41,29 @@ def countdown(df) -> pd.DataFrame:
     df = df[df.countdown >= 0]
     return df
 
+def classification_target(cols):
+    """function to adjust the previously created "fail_30" column and transform data based on the previous data into 0 or 1
+    if value is <= 30, the value is transformed into 1
+    if value is > 30, the value is transformed into 0
+
+    Args:
+        cols: takes as an argument the panads column specified before the apply method
+
+    Returns:
+        int: 0 or 1 based on the previous information
+    """
+    classification = cols[0]
+
+    if classification <= 30:
+        return 1
+    if classification > 30:
+        return 0
+
+    # apply the created function using the .appy method
+    
+
+
+
 def train_test_splitter(df, test_size, random_state, stratify=True) -> pd.DataFrame:
     """Train test split of the drive data
 
@@ -59,6 +84,7 @@ def train_test_splitter(df, test_size, random_state, stratify=True) -> pd.DataFr
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
     return X_train, X_test, y_train, y_test
 
+
 def drop_missing_cols(df, threshold=0.8) -> pd.DataFrame:
     """Drop columns with missing values. A threshold allows to tune which columns are dropped.
 
@@ -75,6 +101,7 @@ def drop_missing_cols(df, threshold=0.8) -> pd.DataFrame:
     #print("Shape of the dataframe", df.shape)
     return df
 
+
 def drop_constant_cols(df) -> pd.DataFrame:
     """Drop columns with constant values since they play no role for modeling
 
@@ -90,6 +117,7 @@ def drop_constant_cols(df) -> pd.DataFrame:
     df = df.drop(cols_to_drop, axis=1)
     return df
 
+
 def drop_missing_rows(df) -> pd.DataFrame:
     """Drop rows with missing values (measurement errors, see EDA)
 
@@ -101,6 +129,7 @@ def drop_missing_rows(df) -> pd.DataFrame:
     """
     df = df.dropna(how="any")
     return df
+
 
 def load_preprocess_data(filename="ST4000DM000_history_total", path=os.getcwd()) -> pd.DataFrame:
     """Load and preprocess drive stats data
@@ -114,10 +143,12 @@ def load_preprocess_data(filename="ST4000DM000_history_total", path=os.getcwd())
     """
     df = load_drive_stats(filename, path)
     df = countdown(df)
+    df['fail_30'] = df[['countdown']].apply(classification_target, axis=1)
     df = drop_missing_cols(df)
     df = drop_missing_rows(df)
     df = drop_constant_cols(df)
     return df
+
 
 def save_preprocessed_data(filename="ST4000DM000_history_total", path=os.getcwd()):
     """Load and preprocess the drive stats data and store the result in a csv file
@@ -136,6 +167,7 @@ def save_preprocessed_data(filename="ST4000DM000_history_total", path=os.getcwd(
         os.mkdir(f"{os.getcwd()}/data/processed/")
     df.to_csv(file, index=False)
     return df
+
 
 if __name__ == "__main__":
     _ = save_preprocessed_data()
