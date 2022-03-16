@@ -29,17 +29,16 @@ def countdown(df) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Drive stats with countdown column
     """
+    df = df.drop_duplicates(keep='first')
     # Series of all the hdds the day they failed to obtain failure date
     failure = df[df.failure == 1]
-    # Only use first failure per hdd
-    #failure.sort_values('date', inplace=True)
-    failure = failure.drop_duplicates(keep='first', subset="serial_number")
     # Assign failure dates
     df['date_failure'] = df['serial_number'].map(failure.set_index('serial_number')['date'])
     # Days to fail as int
     df["countdown"] = (df.date_failure - df.date).dt.days
     df = df[df.countdown >= 0]
     return df
+
 
 def classification_target(cols):
     """function to adjust the previously created "fail_30" column and transform data based on the previous data into 0 or 1
@@ -59,29 +58,35 @@ def classification_target(cols):
     if classification > 30:
         return 0
 
-    # apply the created function using the .appy method
+    # the function will be applied using the .apply method
     
 
-
-
-def train_test_splitter(df, test_size, random_state, stratify=True) -> pd.DataFrame:
+def train_test_splitter(X, y, test_size=0.3, random_state=42) -> pd.DataFrame:
     """Train test split of the drive data
-
     Args:
-        df (_type_): Drive stats
-        test_size (_type_): Size of the test set
-        random_state (_type_): Random state for comparability over different runs
-        stratify (bool, optional): Stratification. Defaults to True.
-
+        X (_type_): Feature variable
+        y (_type_): Target variable
+        test_size (float, optional): Size of the test subset. Defaults to 0.3.
+        random_state (int, optional): Random state for comparability over different runs. Defaults to 42.
     Returns:
-        pd.DataFrame: Split features and targets
+        pd.DataFrame: _description_
     """
-    X = df.copy()
-    y = X.pop("countdown")
-    if stratify:
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
-    else:
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+    # All the unique serial numbers
+    drives = pd.Series(X.serial_number.unique(), name="HDD")
+    # Random sampling of drives
+    drives_test = drives.sample(int(test_size * len(drives)), random_state=random_state)
+    # Remaining drives end up in the train set
+    drives_train = drives.drop(drives_test.index, axis=0)
+    # Create split X and y
+    X_train = X[X.serial_number.isin(drives_train)]
+    X_train = X_train.drop('serial_number', axis=1)
+
+    X_test = X[X.serial_number.isin(drives_test)]
+    X_test = X_test.drop('serial_number', axis=1)
+
+    y_train = y[X.serial_number.isin(drives_train)]
+    y_test = y[X.serial_number.isin(drives_test)]
+    
     return X_train, X_test, y_train, y_test
 
 
