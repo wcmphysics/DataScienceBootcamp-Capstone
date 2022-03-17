@@ -10,3 +10,6 @@ scikit-learn==1.0.2
 statsmodels==0.13.1
 pytest==7.0.1
 testbook==0.4.2
+xgboost
+graphvisz
+dtreeviz
