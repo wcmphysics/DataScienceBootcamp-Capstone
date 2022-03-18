@@ -39,6 +39,7 @@ def countdown(df) -> pd.DataFrame:
     df = df[df.countdown >= 0]
     return df
 
+<<<<<<< HEAD
 
 def classification_target(cols):
     """function to adjust the previously created "fail_30" column and transform data based on the previous data into 0 or 1
@@ -57,6 +58,16 @@ def classification_target(cols):
         return 1
     if classification > 30:
         return 0
+=======
+def train_test_splitter(X, y, test_size=0.3, random_state=42) -> pd.DataFrame:
+    """Train test split of the drive data
+
+    Args:
+        X (_type_): Feature variable
+        y (_type_): Target variable
+        test_size (float, optional): Size of the test subset. Defaults to 0.3.
+        random_state (int, optional): Random state for comparability over different runs. Defaults to 42.
+>>>>>>> main
 
     # the function will be applied using the .apply method
     
@@ -79,6 +90,7 @@ def train_test_splitter(X, y, test_size=0.3, random_state=42) -> pd.DataFrame:
     drives_train = drives.drop(drives_test.index, axis=0)
     # Create split X and y
     X_train = X[X.serial_number.isin(drives_train)]
+<<<<<<< HEAD
     X_train = X_train.drop('serial_number', axis=1)
 
     X_test = X[X.serial_number.isin(drives_test)]
@@ -87,6 +99,11 @@ def train_test_splitter(X, y, test_size=0.3, random_state=42) -> pd.DataFrame:
     y_train = y[X.serial_number.isin(drives_train)]
     y_test = y[X.serial_number.isin(drives_test)]
     
+=======
+    X_test = X[X.serial_number.isin(drives_test)]
+    y_train = y[X.serial_number.isin(drives_train)]
+    y_test = y[X.serial_number.isin(drives_test)]
+>>>>>>> main
     return X_train, X_test, y_train, y_test
 
 
@@ -122,6 +139,22 @@ def drop_constant_cols(df) -> pd.DataFrame:
     df = df.drop(cols_to_drop, axis=1)
     return df
 
+<<<<<<< HEAD
+=======
+def drop_normalized_cols(df) -> pd.DataFrame:
+    """Drop columns with normalized values
+
+    Args:
+        df (_type_): Drive stats data
+
+    Returns:
+        pd.DataFrame: Drive stats file with dropped columns
+    """
+    # Check which columns contain normalized data
+    cols_to_drop = df.columns[df.columns.str.contains("normalized")]
+    df.drop(cols_to_drop, axis=1, inplace=True) # Drop the cols
+    return df
+>>>>>>> main
 
 def drop_missing_rows(df) -> pd.DataFrame:
     """Drop rows with missing values (measurement errors, see EDA)
@@ -135,6 +168,32 @@ def drop_missing_rows(df) -> pd.DataFrame:
     df = df.dropna(how="any")
     return df
 
+<<<<<<< HEAD
+=======
+def drop_doublicate_rows(df) -> pd.DataFrame:
+    """Drop doublicated rows (measurement errors, see EDA)
+
+    Args:
+        df (_type_): Drive stats data
+
+    Returns:
+        pd.DataFrame: Drive stats data with removed rows
+    """
+    df.drop_duplicates(keep='first', subset=["serial_number", "date"])
+    return df
+
+def calculate_target(df, days=30) -> pd.Series:
+    """Calculate target values (will the drive fail in the next days?)
+
+    Args:
+        df (_type_): Drive stat data containing the countdown
+        days (int, optional): Time window we use for the classification. Defaults to 30.
+
+    Returns:
+        pd.Series: Target variable
+    """
+    return df.countdown <= days
+>>>>>>> main
 
 def load_preprocess_data(filename="ST4000DM000_history_total", path=os.getcwd()) -> pd.DataFrame:
     """Load and preprocess drive stats data
@@ -152,6 +211,7 @@ def load_preprocess_data(filename="ST4000DM000_history_total", path=os.getcwd())
     df = drop_missing_cols(df)
     df = drop_missing_rows(df)
     df = drop_constant_cols(df)
+    df = drop_doublicate_rows(df)
     return df
 
 
