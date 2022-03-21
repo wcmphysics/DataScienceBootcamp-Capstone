@@ -39,24 +39,29 @@ def countdown(df) -> pd.DataFrame:
     df = df[df.countdown >= 0]
     return df
 
-def train_test_splitter(df, test_size, random_state, stratify=True) -> pd.DataFrame:
+def train_test_splitter(X, y, test_size=0.3, random_state=42) -> pd.DataFrame:
     """Train test split of the drive data
 
     Args:
-        df (_type_): Drive stats
-        test_size (_type_): Size of the test set
-        random_state (_type_): Random state for comparability over different runs
-        stratify (bool, optional): Stratification. Defaults to True.
+        X (_type_): Feature variable
+        y (_type_): Target variable
+        test_size (float, optional): Size of the test subset. Defaults to 0.3.
+        random_state (int, optional): Random state for comparability over different runs. Defaults to 42.
 
     Returns:
-        pd.DataFrame: Split features and targets
+        pd.DataFrame: _description_
     """
-    X = df.copy()
-    y = X.pop("countdown")
-    if stratify:
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
-    else:
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+    # All the unique serial numbers
+    drives = pd.Series(X.serial_number.unique(), name="HDD")
+    # Random sampling of drives
+    drives_test = drives.sample(int(test_size * len(drives)), random_state=random_state)
+    # Remaining drives end up in the train set
+    drives_train = drives.drop(drives_test.index, axis=0)
+    # Create split X and y
+    X_train = X[X.serial_number.isin(drives_train)]
+    X_test = X[X.serial_number.isin(drives_test)]
+    y_train = y[X.serial_number.isin(drives_train)]
+    y_test = y[X.serial_number.isin(drives_test)]
     return X_train, X_test, y_train, y_test
 
 def drop_missing_cols(df, threshold=0.8) -> pd.DataFrame:
@@ -90,6 +95,20 @@ def drop_constant_cols(df) -> pd.DataFrame:
     df = df.drop(cols_to_drop, axis=1)
     return df
 
+def drop_normalized_cols(df) -> pd.DataFrame:
+    """Drop columns with normalized values
+
+    Args:
+        df (_type_): Drive stats data
+
+    Returns:
+        pd.DataFrame: Drive stats file with dropped columns
+    """
+    # Check which columns contain normalized data
+    cols_to_drop = df.columns[df.columns.str.contains("normalized")]
+    df.drop(cols_to_drop, axis=1, inplace=True) # Drop the cols
+    return df
+
 def drop_missing_rows(df) -> pd.DataFrame:
     """Drop rows with missing values (measurement errors, see EDA)
 
@@ -113,6 +132,18 @@ def drop_doublicate_rows(df) -> pd.DataFrame:
     """
     df.drop_duplicates(keep='first', subset=["serial_number", "date"])
     return df
+
+def calculate_target(df, days=30) -> pd.Series:
+    """Calculate target values (will the drive fail in the next days?)
+
+    Args:
+        df (_type_): Drive stat data containing the countdown
+        days (int, optional): Time window we use for the classification. Defaults to 30.
+
+    Returns:
+        pd.Series: Target variable
+    """
+    return df.countdown <= days
 
 def load_preprocess_data(filename="ST4000DM000_history_total", path=os.getcwd()) -> pd.DataFrame:
     """Load and preprocess drive stats data
