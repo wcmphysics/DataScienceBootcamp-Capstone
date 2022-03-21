@@ -11,5 +11,9 @@ statsmodels==0.13.1
 pytest==7.0.1
 testbook==0.4.2
 xgboost
-graphvisz
-dtreeviz
+
+pydot==1.4.2
+tensorflow-macos==2.8.0
+tensorflow-metal==0.4.0
+Keras==2.8.0
+tensorflow-hub==0.12.0
