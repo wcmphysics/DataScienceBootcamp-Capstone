@@ -101,7 +101,7 @@ def unwrap_smart_7(df_in) -> pd.DataFrame:
     drives = df.serial_number.unique()
     for drive in tqdm(drives): # Loop over drives
         # Create dataframe with time series for drive, reindex and store the old index
-        temp_data = df[df.serial_number == drive].sort_values("countdown", ascending=False).reset_index()
+        temp_data = df[df.serial_number == drive].sort_values("date", ascending=True).reset_index()
         # Calculate the derivate and use spikes to determine jumps
         jumps = temp_data.smart_7_raw.diff() < -5e8
         # Extract index of jumps
