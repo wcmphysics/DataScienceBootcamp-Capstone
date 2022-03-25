@@ -3,9 +3,7 @@ import requests
 
 import pandas as pd
 import streamlit as st 
-import numpy as np
 
-import random
 import json
 
 #saving/loading the modell
@@ -13,19 +11,13 @@ import json
 import warnings
 warnings.filterwarnings('ignore')
 
-# # loading model and data
-# xgb_model = '../models/xgb_model.sav'
-# loaded_model = pickle.load(open(xgb_model, 'rb'))
-# X_test = pd.read_csv('../models/X_test.csv')
-# y_test = pd.read_csv('../models/y_test.csv')
-
 #defining containers
 container_intro = st.container()
 container_test_data = st.container()
 container_upload_data = st.container()
 expander_upload_data = st.expander(label='Click to expand')
 
-#URL for request to backend
+#URL for request to backend (Felix)
 url = 'https://felix-roc-capstone.herokuapp.com/receive_dataframe'
 # CMW url = 'https://heroku-cmw-test.herokuapp.com/receive_dataframe'
 
@@ -43,12 +35,6 @@ def load_data(file):
     data = pd.read_csv(file)
     model_pred = data.sample(30)
     return model_pred
-
-#  n = 89379 #number of records in file
-#     s = 5 #desired sample size
-#     skip = sorted(random.sample(range(n),n-s))
-#     data = pd.read_csv(file, skiprows=skip)
-
 
 
 #SIDEBAR
@@ -93,7 +79,9 @@ with container_intro:
 #load test sample from our provided test
 with container_intro:
     st.markdown('**This is how a random sample of our raw data looks like:**')
-    data = pd.read_csv('file/test.csv')
+    data = pd.read_csv('file/test_data_final.csv')
+    serial = data.sample(1)['serial_number'].to_list()[0]
+    data = data[data['serial_number'] == serial]
     data.sort_values('date', inplace=True, ascending=False)
     st.write(data.head(5))
 
