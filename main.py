@@ -236,15 +236,11 @@ def get_root():
 	return {'message': 'Welcome to the hdd failure prediction API'}
 
 @app.post("/receive_dataframe")
-async def receive_dataframe(dataframe_as_json : Item):
+async def receive_dataframe(dataframe_as_json: Item):
     df = pd.DataFrame(dataframe_as_json.dict())
     #df = pd.read_json(dataframe_as_json)
-    return { "Failure" : run_predict(df)[:,1]}
-
-
-
-
-
+    #y_pred = run_predict(df)
+    return { "Failure" : list(run_predict(df)[:,1])}
 
 
 @app.post("/receive_preprocessed_dataframe")
@@ -255,4 +251,3 @@ async def receive_preprocessed_dataframe(dataframe_as_json : str):
 # run the app
 if __name__ == '__main__':
     uvicorn.run(app)
-    #uvicorn.run(app, port=9696)
