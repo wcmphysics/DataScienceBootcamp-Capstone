@@ -240,7 +240,7 @@ async def receive_dataframe(dataframe_as_json: Item):
     df = pd.DataFrame(dataframe_as_json.dict())
     #df = pd.read_json(dataframe_as_json)
     #y_pred = run_predict(df)
-    return { "Failure" : list(run_predict(df)[:,1])}
+    return { "Failure" : (run_predict(df)[:,1],)}
 
 
 @app.post("/receive_preprocessed_dataframe")

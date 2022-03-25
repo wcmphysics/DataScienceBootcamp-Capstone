@@ -18,7 +18,7 @@ def __get_data(df):
     return X_test
 
 def __get_model():
-    model_path = "models/linear"
+    model_path = "models/deployment_xgb"
     model = load_model(model_path)
     return model
 
