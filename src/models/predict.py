@@ -32,7 +32,7 @@ def run_predict(df):
     X_test = preprocessor.fit_transform(X_test) # Nothing saved in the fit!
     logger.info("Prediction in progress")
     y_proba = model.predict_proba(X_test)
-    return y_proba > 0.15
+    return y_proba > 0.501
 
 if __name__ == "__main__":
     import logging
