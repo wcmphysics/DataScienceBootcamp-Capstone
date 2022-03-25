@@ -239,8 +239,9 @@ def get_root():
 async def receive_dataframe(dataframe_as_json: Item):
     df = pd.DataFrame(dataframe_as_json.dict())
     #df = pd.read_json(dataframe_as_json)
-    #y_pred = run_predict(df)
-    return { "Failure" : (run_predict(df)[:,1],)}
+    y_pred = pd.Series(run_predict(df)[:,1])
+    out = json.loads(y_pred.to_json(orient='columns'))
+    return out
 
 
 @app.post("/receive_preprocessed_dataframe")
