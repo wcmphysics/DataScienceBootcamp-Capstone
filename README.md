@@ -4,6 +4,13 @@ A short description of the project.
 [Project board](https://github.com/felix-roc/hdd-anomaly-detection/projects/1)
 
 [GoogleSheet](https://docs.google.com/spreadsheets/d/1YKveHT7hxAMxskIMl8ME6mpzMyzKsbP0VDcdaEIcJc8/edit#gid=1615308371)
+
+## Dashboard
+
+[Dashboard](https://share.streamlit.io/felix-roc/hdd-anomaly-detection/streamlit_frontend)
+
+[API](https://felix-roc-capstone.herokuapp.com/)
+
 ## Setup
 Create virtual environment
 
