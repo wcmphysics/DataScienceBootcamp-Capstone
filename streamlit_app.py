@@ -79,7 +79,7 @@ with container_intro:
 #load test sample from our provided test
 with container_intro:
     st.markdown('**This is how a random sample of our raw data looks like:**')
-    data = pd.read_csv('file/test_data_final.csv')
+    data = pd.read_csv('file/test_data.csv')
     serial = data.sample(1)['serial_number'].to_list()[0]
     data = data[data['serial_number'] == serial]
     data.sort_values('date', inplace=True, ascending=False)
