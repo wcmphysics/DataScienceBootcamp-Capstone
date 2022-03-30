@@ -95,6 +95,7 @@ with container_intro:
             st.balloons()
         else:
             st.write('__**Your hard drive might fail in the next 30 days!**__')
+            st.snow()
     st.header('')
     st.header('')
 
@@ -126,3 +127,4 @@ with container_upload_data:
                 st.balloons()
             else:
                 st.write('__**Your hard drive might fail in the next 30 days!**__')
+                st.snow()
