@@ -108,7 +108,7 @@ with container_upload_data:
     # with expander_upload_data: 
     #upload a file
     dataframe_upload = None
-    uploaded_file = st.file_uploader("Choose your file for your own hard drive to upload. Make sure it's only data for the same model.", help= 'Drag your files here')
+    uploaded_file = st.file_uploader("Choose your file for your own hard drive to upload. Make sure it's only data for the model 'ST4000DM000' from Seagate.", help= 'Drag your files here')
     if uploaded_file is not None:
         dataframe_upload = pd.read_csv(uploaded_file)
         dataframe_upload.sort_values('date', inplace=True, ascending=False)
