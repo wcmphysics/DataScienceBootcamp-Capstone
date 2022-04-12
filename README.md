@@ -12,9 +12,15 @@ A short description of the project.
 [API](https://felix-roc-capstone.herokuapp.com/)
 
 ## Setup
-Create virtual environment
 
-Install using makefile
+create virtual environment and install packages: make setup
+
+install custom packages: python setup.py install
+
+run training: python -m src.train
+
+get predictions: python -m src.predict
+
 ## Project Organization
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
