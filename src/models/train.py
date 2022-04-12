@@ -70,7 +70,7 @@ def run_training():
                 ('scaler_log', log_transformer(offset=1)),
                 ('scaler_minmax ', MinMaxScaler()),
                 ])
-    ann_classifier = KerasClassifier(build_fn=create_ann_model, 
+    ann_classifier = KerasClassifier(build_fn=__create_ann_model__, 
                             epochs=150,
                             batch_size= 40000,
                             class_weight={0 : 1.0, 1 : 0.4*len(y_train)/y_train.sum()},
