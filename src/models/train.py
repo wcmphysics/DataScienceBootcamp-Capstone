@@ -72,7 +72,7 @@ def run_training():
                 ('scaler_minmax ', MinMaxScaler()),
                 ])
     ann_classifier = KerasClassifier(build_fn=__create_ann_model__, 
-                            epochs=150,
+                            epochs=15,
                             batch_size= 40000,
                             class_weight={0 : 1.0, 1 : 0.4*len(y_train)/y_train.sum()},
                             verbose=0,
@@ -107,8 +107,8 @@ def run_training():
     #    pickle.dump(model, file_out)
     # saving the model
     logger.info("Saving model in the model folder")
-    path = "models/linear"
-    save_model(sk_model=reg, path=path)
+    path = "models/stacked"
+    save_model(sk_model=model, path=path)
 
 
 if __name__ == "__main__":
