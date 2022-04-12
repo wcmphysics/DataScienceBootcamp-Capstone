@@ -1,6 +1,7 @@
 from logging import getLogger
 import pandas as pd
-import pickle
+# import pickle
+from mlflow.sklearn import save_model
 import warnings
 import os
 
