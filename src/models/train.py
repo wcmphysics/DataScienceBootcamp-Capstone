@@ -101,13 +101,13 @@ def run_training():
     logger.info("Fitting in progress")
     model.fit(X_train, y_train)
     logger.info("Pickle")
-    filename = 'deployment.bin'
-    with open(filename, 'wb') as file_out:
-        pickle.dump(model, file_out)
+    # filename = 'deployment.bin'
+    # with open(filename, 'wb') as file_out:
+    #    pickle.dump(model, file_out)
     # saving the model
-    # logger.info("Saving model in the model folder")
-    # path = "models/linear"
-    # save_model(sk_model=reg, path=path)
+    logger.info("Saving model in the model folder")
+    path = "models/linear"
+    save_model(sk_model=reg, path=path)
 
 
 if __name__ == "__main__":
