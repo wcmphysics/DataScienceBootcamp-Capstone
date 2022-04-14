@@ -1,68 +1,30 @@
-# Capstone Project: HDD Anomaly-Detection
-A short description of the project.
-## Useful links:
-[Project board](https://github.com/felix-roc/hdd-anomaly-detection/projects/1)
+# HDD Anomaly-Detection
+This is a repository about predicting if a hard drive is going to fail or not within 30 days by machine learning algorithms and artificial neural networks. 
 
-[GoogleSheet](https://docs.google.com/spreadsheets/d/1YKveHT7hxAMxskIMl8ME6mpzMyzKsbP0VDcdaEIcJc8/edit#gid=1615308371)
+The prediction is based on a stacked model consists of XGBoost and an artificial neural network. The model is trained and verified for a specific hard-drive model using the data released by [BackBlaze](https://www.backblaze.com/b2/hard-drive-test-data.html#downloading-the-raw-hard-drive-test-data), and it scores at 84% for ROC-AUC. In addition, we deployed a trained XGBoost model as an API in [Heroku](https://felix-roc-capstone.herokuapp.com/) and a GUI in [streamlit.io](https://share.streamlit.io/felix-roc/hdd-anomaly-detection/streamlit_frontend), so users can easily use the model to check if their hard drives are going to fail.
 
-## Dashboard
+For a short introduction to the project, see the stakeholder presentation slides [here](https://github.com/felix-roc/hdd-anomaly-detection/blob/wcmphysics-readme-update/reports/to_fail_or_not_to_fail.pdf).
 
-[Dashboard](https://share.streamlit.io/felix-roc/hdd-anomaly-detection/streamlit_frontend)
 
-[API](https://felix-roc-capstone.herokuapp.com/)
+# Installation
+One can set up a virtual environment and install the required standard packages simply by running
 
-## Setup
+    make setup
 
-create virtual environment and install packages: make setup
+After that, activate the environment
 
-install custom packages: python setup.py install
+    source .venv/bin/activate
 
-run training: python -m src.train
+And run the following command to install the custom packages
 
-get predictions: python -m src.predict
+    python setup.py install
 
-## Project Organization
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+# Training and Prediction
+To train the model, one should first unzip the zipped csv file in the main, and then run:
+
+    python -m src.train
+
+To use the trained model and predict from the data "ST4000DM000_history_total.csv", run:
+
+    python -m src.predict
+
